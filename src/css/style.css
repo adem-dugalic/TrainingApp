@@ -1,0 +1,22 @@
+.MuiDrawer-paperAnchorDockedLeft {
+  border-right: none;
+}
+
+.logo {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  top: 25%;
+  text-align: center;
+}
+.logo .ius {
+  left: 35%;
+  position: relative;
+  width: 60px;
+  height: auto;
+}
+.link {
+  text-decoration-style: none;
+  text-decoration: none;
+  color: #fff;
+}

@@ -1,59 +1,98 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import { BrowserRouter as Switch, Route } from "react-router-dom";
+import "./css/App.css";
 
 //Style imports
-import {ThemeProvider, createMuiTheme} from '@material-ui/core/styles'
-import {orange} from '@material-ui/core/colors'
-import 'fontsource-roboto'
-import Container from '@material-ui/core/Container'
-import Paper from '@material-ui/core/Paper'
-import Grid from '@material-ui/core/Grid'
-import { Widgets } from '@material-ui/icons';
+import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
+import { orange } from "@material-ui/core/colors";
+import "fontsource-roboto";
+import Container from "@material-ui/core/Container";
+import Paper from "@material-ui/core/Paper";
+import Grid from "@material-ui/core/Grid";
+import { Widgets } from "@material-ui/icons";
 
 //Components
-import HelloWorld from './Components/HelloWorld'
-import CounterExample from './Components/CounterExample'
-import Header from './Components/Header'
-import Forms from './Components/Forms'
-import TextStuff from './Components/TextStuff'
-import Bar from './Components/Bar'
+import Bar from "./Components/Bar";
+import Drawer from "./Components/Drawer";
+import Home from "./Components/Home";
+import Coursetable from "./Components/Coursetable";
+import { Register } from "./Components/Register";
+import { Login } from "./Components/Login";
+import { AllCoursesTable } from "./Components/AllCoursesTable";
 
 const theme = createMuiTheme({
-  palette:{
-    primary: {
-      main: orange[500]
-    }
-  }
-    
-})
+  // palette:{
+  //   primary: {
+  //     main: orange[500]
+  //   }
+  // }
+});
+
+function getWindowDimensions() {
+  const { innerWidth: width, innerHeight: height } = window;
+  if (width < 800) {
+    return true;
+  } else return false;
+}
 
 function App() {
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [isMobile, setisMobile] = useState(false);
+
+  window.addEventListener("resize", () => {
+    setisMobile(getWindowDimensions);
+  });
+
   return (
     <ThemeProvider theme={theme}>
-      <Container maxWidth="xs">
-        <div className="App">
-          <Bar/>
-          <HelloWorld name = "Again"/> 
-          <Grid container spacing={2} justify="center">
-            <Grid item xs={3} sm={6}>
-              <Paper style={{height: 75, width:'100%',}}>
-              </Paper>
-            </Grid>
-            <Grid item xs={3} sm={6}>
-              <Paper style={{height: 75, width:'100%',}}>
-              </Paper>
-            </Grid>
-            <Grid item xs={3} xl={12}>
-              <Paper style={{height: 75, width:'100%',}}>
-              </Paper>
-            </Grid>
-          </Grid>
-          <CounterExample/> 
-          <Forms/>
-          <TextStuff/>     
-        </div>
-      </Container>
+      <div className="backgroundDiv">
+        <Switch>
+          <Route exact path="/">
+            <Login />
+          </Route>
+          <Route exact path="/register">
+            <Register />
+          </Route>
+          <Route exact path="/Home">
+            <div className="panelDiv">
+              <Drawer setMobileOpen={setMobileOpen} mobileOpen={mobileOpen} />
+              <main className="main">
+                <div className="homeDiv">
+                  {isMobile ? (
+                    <Bar
+                      setMobileOpen={setMobileOpen}
+                      mobileOpen={mobileOpen}
+                    />
+                  ) : (
+                    ""
+                  )}
+                  <Home />
+                </div>
+              </main>
+            </div>
+          </Route>
+          <Route exact path="/MyCourses">
+            <div className="panelDiv">
+              <Drawer setMobileOpen={setMobileOpen} mobileOpen={mobileOpen} />
+              <main className="main">
+                <Bar setMobileOpen={setMobileOpen} mobileOpen={mobileOpen} />
+                <div className="MyCourses">
+                  <Coursetable />
+                </div>
+              </main>
+            </div>
+          </Route>
+          <Route exact path="/AllCourses">
+            <div className="panelDiv">
+              <Drawer setMobileOpen={setMobileOpen} mobileOpen={mobileOpen} />
+              <main className="main">
+                <Bar setMobileOpen={setMobileOpen} mobileOpen={mobileOpen} />
+                <AllCoursesTable />
+              </main>
+            </div>
+          </Route>
+        </Switch>
+      </div>
     </ThemeProvider>
   );
 }
