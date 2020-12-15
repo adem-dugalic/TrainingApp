@@ -18,6 +18,7 @@ import {
   Theme,
   createStyles,
 } from "@material-ui/core/styles";
+
 import "../css/style.css";
 import Logo from "../img/IUSlogo2.png";
 import { Redirect, Link } from "react-router-dom";
@@ -86,18 +87,18 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-interface Props {
-  setMobileOpen: Function;
+interface DrawerProps {
+  mobileOpenFunction: Function;
   mobileOpen: boolean;
 }
 
-export default function ResponsiveDrawer(props: Props) {
+export default function ResponsiveDrawer(props: DrawerProps) {
   const classes = useStyles();
   const theme = useTheme();
   const mobile = props.mobileOpen;
 
   const handleDrawerToggle = () => {
-    props.setMobileOpen(!mobile);
+    props.mobileOpenFunction(!mobile);
   };
 
   const drawer = (
@@ -126,7 +127,7 @@ export default function ResponsiveDrawer(props: Props) {
               <Link
                 className="link"
                 to="/Home"
-                onClick={() => props.setMobileOpen(false)}
+                onClick={() => props.mobileOpenFunction(false)}
               >
                 <ListItemText primary="Home" />
               </Link>
@@ -139,7 +140,7 @@ export default function ResponsiveDrawer(props: Props) {
               <Link
                 className="link"
                 to="/AllCourses"
-                onClick={() => props.setMobileOpen(false)}
+                onClick={() => props.mobileOpenFunction(false)}
               >
                 <ListItemText primary="Add Courses" />
               </Link>
@@ -152,7 +153,7 @@ export default function ResponsiveDrawer(props: Props) {
               <Link
                 className="link"
                 to="/MyCourses"
-                onClick={() => props.setMobileOpen(false)}
+                onClick={() => props.mobileOpenFunction(false)}
               >
                 <ListItemText primary="My Courses" />
               </Link>

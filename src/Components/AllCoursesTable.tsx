@@ -1,45 +1,31 @@
 import React, { useState } from "react";
 import axios from "axios";
 import Cookie from "js-cookie";
-import { useQuery } from "react-query";
+import { QueryStatus, useQuery } from "react-query";
+import { FetchAllCourses } from "./FetchAllCourses";
 
-interface AllCoursesTableProps {}
+interface AllCoursesTableProps {
+  data?: any;
+  status?:
+    | QueryStatus.Idle
+    | QueryStatus.Loading
+    | QueryStatus.Success
+    | QueryStatus.Error;
+}
 
-const fetchCourses = async () => {
-  const res = await fetch(
-    "http://localhost:5000/courses?" +
-      "&token=" +
-      Cookie.get("token") +
-      "&userId=" +
-      Cookie.get("userId")
-  );
-  return res.json();
-};
+// const addCourse = async (courseId) => {
+//   const res = await fetch(
+//     "http://localhost:5000/users/addCourse?token=" +
+//       Cookie.get("token") +
+//       "&userId=" +
+//       Cookie.get("userId"),
+//     courseId
+//   );
+//   return res.json();
+// };
 
-export const AllCoursesTable: React.FC<AllCoursesTableProps> = ({}) => {
-  // const[defaultSt, setDefaultSt] = useState(); // array
-  // const[userCourse, setUserCourse]= useState();//array
-  // const[courseData, setCourseData]= useState();//array
-  // const[page, setPage]= useState();
-  // const[courseId, setCourseId]= useState();//array
-  // const[userId, setUserId]= useState();
-  // const[courseID, setCourseID]= useState();
-
-  // search
-  // const[search, setSearch]= useState();
-  ////////////////////////////////////////////////////////////////
-
-  const { data, status } = useQuery("courses", fetchCourses);
-
-  // const [Data,setData]=useState({
-  //   prerequisite: [],
-  //   dataTest: [],
-  //   _id: '',
-  //   course_id: '',
-  //   course_name: '',
-  //   Lecturer: '',
-  //   AcademicUnit: ''
-  // })
+export const AllCoursesTable: React.FC<AllCoursesTableProps> = () => {
+  const { data, status } = FetchAllCourses();
   if (status === "error") {
     return <div>Error</div>;
   }
@@ -47,21 +33,8 @@ export const AllCoursesTable: React.FC<AllCoursesTableProps> = ({}) => {
     return <div>Loading</div>;
   }
 
-  console.log(data.array[0].Lecturer);
-  console.log(status);
-
-  //const [testingArr, setTestingArr] = useState(data.array);
-
-  // setData({prerequisite:data.array.prerequisite})
   const maybe = data.array.map((item: any) => (
-    <tr
-    // key = {item.course_id}
-    // style={
-    //   this.state.userCourse.includes(item._id) > 0
-    //     ? { display: "none" }
-    //     : { background: "#353131" }
-    // }
-    >
+    <tr key={item.course_id}>
       <td className="title">{item.course_id}</td>
       <td>
         <a className="ecampus" href={"https://ecampus.ius.edu.ba/" + item.Url}>
@@ -105,17 +78,6 @@ export const AllCoursesTable: React.FC<AllCoursesTableProps> = ({}) => {
   //     });
   //   })
   //   .catch((err) => alert("Error: " + err));
-
-  // async updateTable() {
-  // const response = await fetch(
-  //   "http://localhost:5000/courses?page=" +
-  //     this.state.page +
-  //     "&token=" +
-  //     Cookie.get("token") +
-  //     "&userId=" +
-  //     Cookie.get("userId")
-  // );
-  // const res = await response.json();
 
   // this.setState({
   //   data: res.array,
